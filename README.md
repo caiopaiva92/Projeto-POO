@@ -1,10 +1,10 @@
-# 🚀 Projeto Final - Programação Orientada a Objetos (POO) em C++
+# Projeto - Programação Orientada a Objetos (POO) em C++
 
 **Status do Projeto:** ✅ Concluído
 
 ---
 
-## 📌 Sobre o Projeto
+## Sobre o Projeto
 Bem-vindo ao repositório do Projeto de Programação Orientada a Objetos (POO).
 
 Este repositório contém o código-fonte, a documentação e os artefatos do projeto prático da disciplina de POO. O objetivo principal do trabalho foi aplicar na prática os conceitos fundamentais do paradigma orientado a objetos, como: **Abstração**, **Encapsulamento**, **Herança** e **Polimorfismo**, na resolução de um problema real de engenharia de software utilizando **C++**.
@@ -13,7 +13,7 @@ O projeto é realizado pelo autor Caio Paiva que encontra-se no terceiro períod
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 - **Linguagem:** C++ (C++17 ou superior)
 - **Compilador:** GCC / Clang / MSVC
 - **IDE / Editor:** Visual Studio Code (VS Code)
