@@ -1,7 +1,5 @@
 # Projeto - Programação Orientada a Objetos (POO) em C++
 
-**Status do Projeto:** ✅ Concluído
-
 ---
 
 ## Sobre o Projeto
