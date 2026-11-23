@@ -1,3 +1,8 @@
+# Pasta de compilação (CMake e Makefile) — não versionada
+build/
+
+# Arquivos de IDE
+.vscode/
 # Prerequisites
 *.d
 
