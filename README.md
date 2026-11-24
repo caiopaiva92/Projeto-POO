@@ -73,6 +73,6 @@ Este projeto utilizou modelo de linguagem (LLM) como apoio. Registro do uso:
 
 | Data | Ferramenta | Para quê | O que foi aproveitado / alterado |
 |------|-----------|----------|----------------------------------|
-| 23/11/2026 | Claude (Anthropic) | Montar a estrutura de pastas, `CMakeLists.txt`, `Makefile`, `.gitignore` e seções do README conforme R1 e R2 | Estrutura e arquivos de build aproveitados; revisados e testados pelo autor |
+| 23/11/2026 | Claude (Anthropic) | Adequar o projeto ao R3: biblioteca com `add_library`, portão de avisos com `-Werror` e operador de saída no lugar de `std::cout` | Alterações aproveitadas; compiladas com o portão e testadas pelo autor |
 
 Todo código gerado com apoio de LLM foi lido, compilado e testado pelo autor antes do commit.

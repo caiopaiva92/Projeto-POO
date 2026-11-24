@@ -33,3 +33,28 @@ Registro das principais decisões tomadas durante o desenvolvimento e o motivo d
 **Decisão:** remover a regra `Makefile` que veio no modelo de `.gitignore` do GitHub.
 
 **Motivo:** o modelo ignora Makefiles gerados pelo CMake, mas neste projeto o Makefile é escrito à mão e precisa ser versionado.
+
+
+---
+
+## D5 · Classes numa biblioteca separada do executável
+
+**Decisão:** as classes formam a biblioteca `poo` (`add_library`); o `main.cpp` é um executável que liga nela.
+
+**Motivo:** separa o modelo (classes) do programa que o usa, permitindo reaproveitar e testar a biblioteca sem o `main`.
+
+---
+
+## D6 · Classes não imprimem
+
+**Decisão:** nenhuma classe usa `std::cout`; a saída é feita por `operator<<(std::ostream&, ...)`, e quem escolhe onde imprimir é o `main`.
+
+**Motivo:** a classe não fica presa ao terminal — o mesmo operador serve para `std::cout`, arquivo ou `std::ostringstream`.
+
+---
+
+## D7 · Portão de avisos com `-Werror` na biblioteca
+
+**Decisão:** a biblioteca compila com o portão da Unidade I (`-Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -Wcast-align -Wconversion -Wsign-conversion -Wnon-virtual-dtor -Wdouble-promotion -Wformat=2 -Werror`).
+
+**Motivo:** qualquer aviso vira erro, obrigando o código das classes a ficar limpo (sem conversões implícitas, casts no estilo C, sombreamento etc.).
