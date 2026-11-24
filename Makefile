@@ -1,40 +1,29 @@
-# Compilação alternativa ao CMake. Tudo é gerado dentro de build/.
-CXX      ?= g++
-CXXFLAGS := -std=c++17 -Iinclude
+# Makefile fino: so chama o CMake. Quem compila de verdade e o CMakeLists.txt.
+BUILD := build
+EXE   := $(BUILD)/app
 
-# Portão de avisos da Unidade I, aplicado à biblioteca das classes
-PORTAO := -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -Wcast-align \
-          -Wconversion -Wsign-conversion -Wnon-virtual-dtor -Wdouble-promotion \
-          -Wformat=2 -Werror
+.PHONY: all roda verifica limpa
 
-SRC_DIR   := src
-BUILD_DIR := build
-LIB       := $(BUILD_DIR)/libpoo.a
-TARGET    := $(BUILD_DIR)/app
+# make: configura e compila
+all:
+	cmake -S . -B $(BUILD) -G "Unix Makefiles"
+	cmake --build $(BUILD)
 
-LIB_SRCS := $(filter-out $(SRC_DIR)/main.cpp,$(wildcard $(SRC_DIR)/*.cpp))
-LIB_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(LIB_SRCS))
+# make roda: compila e executa a demonstracao
+roda: all
+	./$(EXE)
 
-.PHONY: all run clean
+# make verifica: o portao. Compila (biblioteca com -Werror), roda e confere
+# que a ultima linha da saida e vivos=0
+verifica: all
+	./$(EXE) > $(BUILD)/saida.txt
+	@ultima=$$(tail -n 1 $(BUILD)/saida.txt | tr -d '\r'); \
+	if [ "$$ultima" = "vivos=0" ]; then \
+		echo "verifica: OK (ultima linha: $$ultima)"; \
+	else \
+		echo "verifica: FALHOU (ultima linha: $$ultima)"; exit 1; \
+	fi
 
-all: $(TARGET)
-
-# Executável: main.cpp ligado à biblioteca
-$(TARGET): $(SRC_DIR)/main.cpp $(LIB)
-	$(CXX) $(CXXFLAGS) -Wall -Wextra $< -L$(BUILD_DIR) -lpoo -o $@
-
-# Biblioteca estática com as classes
-$(LIB): $(LIB_OBJS)
-	ar rcs $@ $^
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $(PORTAO) -c $< -o $@
-
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
-
-run: $(TARGET)
-	./$(TARGET)
-
-clean:
-	rm -rf $(BUILD_DIR)
+# make limpa: apaga a pasta de compilacao
+limpa:
+	rm -rf $(BUILD)
