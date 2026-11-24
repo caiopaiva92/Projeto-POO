@@ -1,55 +1,29 @@
-# Projeto - Programação Orientada a Objetos (POO) em C++
+# Projeto de POO em C++ – Farmácia Bem-Estar
 
----
+Projeto da disciplina de Programação Orientada a Objetos, feito por Caio Paiva, aluno do 3º período de Ciência de Dados e Inteligência Artificial da UFPB.
 
-## Sobre o Projeto
-Bem-vindo ao repositório do Projeto de Programação Orientada a Objetos (POO).
+## Sobre o projeto
 
-Este repositório contém o código-fonte, a documentação e os artefatos do projeto prático da disciplina de POO. O objetivo principal do trabalho foi aplicar na prática os conceitos fundamentais do paradigma orientado a objetos, como: **Abstração**, **Encapsulamento**, **Herança** e **Polimorfismo**, na resolução de um problema real de engenharia de software utilizando **C++**.
+A Farmácia Bem-Estar é uma farmácia de bairro que controlava o estoque num caderno. O sistema organiza esse estoque:
 
-O projeto é realizado pelo autor Caio Paiva que encontra-se no terceiro período do curso de Ciência de Dados e Inteligencia Artificial da Universidade Federal da Paraíba (UFPB) e nas seções a seguir, você encontrará a especificação dos requisitos implementados, as instruções para execução da aplicação e os detalhes da estrutura orientada a objetos.
+- medicamentos isentos de prescrição (MIP) podem ser vendidos sem receita;
+- medicamentos controlados só saem com receita, e cada saída fica registrada;
+- o estoque cadastra, busca, remove e calcula o valor total, sem aceitar nomes repetidos.
 
----
+Este trabalho continua o sistema que fiz na Unidade I, agora usando herança, polimorfismo, classe abstrata e interface.
 
-## Tecnologias Utilizadas
-- **Linguagem:** C++ (C++17 ou superior)
-- **Compilador:** GCC / Clang / MSVC
-- **IDE / Editor:** Visual Studio Code (VS Code)
-- **Controle de Versão:** Git / GitHub
+## Como compilar e rodar
 
----
+É preciso ter CMake (3.16 ou mais novo), um compilador com C++17 e o make.
 
-## Estrutura e Conceitos Aplicados
-O projeto foi desenvolvido aplicando os pilares da Orientação a Objetos:
-- **Abstração:** Mapeamento do domínio do problema em classes e objetos.
-- **Encapsulamento:** Utilização de modificadores de acesso (`private`, `protected`, `public`) e métodos *getters* e *setters*.
-- **Herança:** Derivação de classes para reaproveitamento de código e organização hierárquica.
-- **Polimorfismo:** Uso de métodos virtuais (`virtual`) e sobrescrita para comportamentos dinâmicos.
-
----
-
-
----
-
-## Estrutura de Pastas
-
-```
-include/poo/      cabeçalhos (.hpp), um por classe
-src/              implementações (.cpp) e o main.cpp
-CMakeLists.txt    build com CMake
-Makefile          build com Make
-README.md         este arquivo
-DECISAO.md        decisões de projeto
-.gitignore        ignora a pasta build/
+```bash
+make            # configura e compila
+make roda       # compila e roda a demonstração
+make verifica   # compila com -Werror, roda e confere se a última linha é vivos=0
+make limpa      # apaga a pasta build/
 ```
 
-A pasta `build/` é gerada na compilação e **não é versionada**.
-
----
-
-## Como Compilar e Executar
-
-### Com CMake
+Também dá para usar o CMake direto:
 
 ```bash
 cmake -S . -B build
@@ -57,22 +31,37 @@ cmake --build build
 ./build/app
 ```
 
-### Com Make
+## Organização
 
-```bash
-make        # compila
-make run    # compila e executa
-make clean  # apaga a pasta build/
+```
+include/poo/      cabeçalhos, um por classe
+src/              implementações e o main.cpp
+CMakeLists.txt    compilação (biblioteca poo + executável app)
+Makefile          atalhos que chamam o CMake
+DECISAO.md        explicação das escolhas do projeto
 ```
 
----
+A pasta `build/` é criada na compilação e não vai para o repositório.
+
+## Classes
+
+| Classe | O que faz | Requisito |
+|---|---|---|
+| `Produto` | Classe abstrata com o que todo item do estoque tem; conta os objetos vivos | R5 |
+| `Escrituravel` | Interface para escriturar as saídas com receita | R6 |
+| `MedicamentoIsento` | Medicamento que sai sem receita | R7 |
+| `MedicamentoControlado` | Medicamento que exige receita e escritura a saída | R7 e R8 |
+| `Estoque` | Guarda os medicamentos (herança privada de `std::vector`) | R9 |
+
+As explicações de cada escolha estão no [DECISAO.md](DECISAO.md).
 
 ## Uso de LLM
 
-Este projeto utilizou modelo de linguagem (LLM) como apoio. Registro do uso:
+Usei o Claude (Anthropic) como apoio durante o projeto. Registro abaixo onde ele foi usado:
 
-| Data | Ferramenta | Para quê | O que foi aproveitado / alterado |
-|------|-----------|----------|----------------------------------|
-| 23/11/2026 | Claude (Anthropic) | Adequar o projeto ao R3: biblioteca com `add_library`, portão de avisos com `-Werror` e operador de saída no lugar de `std::cout` | Alterações aproveitadas; compiladas com o portão e testadas pelo autor |
+| Data | Onde usei | O que fiz com o resultado |
+|---|---|---|
+| 23/11/2026 | Estrutura de pastas, `CMakeLists.txt`, `Makefile` e `.gitignore` (R1 e R2) | Usei a estrutura, revisei e testei a compilação |
+| 23/11/2026 | Ajustes do R3: biblioteca com `add_library`, portão com `-Werror` e `operator<<` no lugar do `cout` | Usei as alterações e compilei com o portão |
 
-Todo código gerado com apoio de LLM foi lido, compilado e testado pelo autor antes do commit.
+Todo o código foi lido, compilado e testado por mim antes de cada commit.
