@@ -6,14 +6,23 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Todos os .cpp de src/ entram no executável
-file(GLOB_RECURSE FONTES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp)
+# Biblioteca com as classes: todos os .cpp de src/, exceto o main.cpp
+file(GLOB FONTES_LIB CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp)
+list(REMOVE_ITEM FONTES_LIB ${CMAKE_SOURCE_DIR}/src/main.cpp)
 
-add_executable(app ${FONTES})
-target_include_directories(app PRIVATE ${CMAKE_SOURCE_DIR}/include)
+add_library(poo ${FONTES_LIB})
+target_include_directories(poo PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
+# Portão de avisos da Unidade I, aplicado à biblioteca das classes
 if(MSVC)
-    target_compile_options(app PRIVATE /W4)
+    target_compile_options(poo PRIVATE /W4 /WX)
 else()
-    target_compile_options(app PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_options(poo PRIVATE
+        -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -Wcast-align
+        -Wconversion -Wsign-conversion -Wnon-virtual-dtor -Wdouble-promotion
+        -Wformat=2 -Werror)
 endif()
+
+# Executável: só o main.cpp, ligado à biblioteca
+add_executable(app ${CMAKE_SOURCE_DIR}/src/main.cpp)
+target_link_libraries(app PRIVATE poo)
