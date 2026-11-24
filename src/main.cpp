@@ -1,6 +1,9 @@
 #include "poo/Aplicacao.hpp"
 
+#include <iostream>
+
 int main() {
     poo::Aplicacao app("Projeto POO em C++");
-    return app.executar();
+    std::cout << app << '\n';
+    return 0;
 }
