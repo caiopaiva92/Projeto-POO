@@ -4,6 +4,9 @@
 
 namespace poo {
 
+int MedicamentoControlado::vivos_ = 0;
+int MedicamentoControlado::criados_ = 0;
+
 MedicamentoControlado::MedicamentoControlado(std::string nome, std::string principioAtivo,
                                              int quantidade, double preco,
                                              std::string lote, std::string validade,
@@ -11,14 +14,21 @@ MedicamentoControlado::MedicamentoControlado(std::string nome, std::string princ
     : Produto(std::move(nome), std::move(principioAtivo), quantidade, preco,
               std::move(lote), std::move(validade)),
       tarja_(std::move(tarja)),
-      escriturado_(0) {}
+      escriturado_(0) {
+    ++vivos_;
+    ++criados_;
+}
+
+MedicamentoControlado::~MedicamentoControlado() {
+    --vivos_;
+}
 
 bool MedicamentoControlado::dispensar(int qtd, const std::string& receita) {
     if (receita.empty()) {
-        return false;  
+        return false;  // sem receita, nao dispensa
     }
     if (!retirar(qtd)) {
-        return false;  
+        return false;  // quantidade invalida ou estoque insuficiente
     }
     escriturar(qtd, receita);
     return true;
@@ -26,6 +36,10 @@ bool MedicamentoControlado::dispensar(int qtd, const std::string& receita) {
 
 std::string MedicamentoControlado::tarja() const {
     return tarja_;
+}
+
+std::string MedicamentoControlado::condicaoDeVenda() const {
+    return "receita retida, " + std::to_string(escriturado_) + " un. escriturada(s)";
 }
 
 void MedicamentoControlado::escriturar(int qtd, const std::string& receita) {
@@ -37,8 +51,7 @@ int MedicamentoControlado::totalEscriturado() const {
     return escriturado_;
 }
 
-const std::vector<std::string>& MedicamentoControlado::getReceitasRetidas() const {
-    return receitasRetidas_;
-}
+int MedicamentoControlado::vivos() { return vivos_; }
+int MedicamentoControlado::criados() { return criados_; }
 
-} 
+}   
