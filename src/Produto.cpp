@@ -1,11 +1,10 @@
 #include "poo/Produto.hpp"
 
 #include <iomanip>
+#include <sstream>
 #include <utility>
 
 namespace poo {
-
-int Produto::vivos_ = 0;
 
 Produto::Produto(std::string nome, std::string principioAtivo, int quantidade,
                  double preco, std::string lote, std::string validade)
@@ -14,12 +13,25 @@ Produto::Produto(std::string nome, std::string principioAtivo, int quantidade,
       quantidade_(quantidade > 0 ? quantidade : 0),
       preco_(preco > 0.0 ? preco : 0.0),
       lote_(std::move(lote)),
-      validade_(std::move(validade)) {
-    ++vivos_;
+      validade_(std::move(validade)) {}
+
+std::string Produto::ficha() const {
+    std::ostringstream os;
+    os << std::left << std::setw(12) << nome_
+       << " | " << std::setw(20) << principioAtivo_
+       << " | Qtd: " << std::setw(4) << quantidade_
+       << " | R$ " << std::fixed << std::setprecision(2) << preco_
+       << " | Lote " << lote_ << " (val. " << validade_ << ")"
+       << " | Tarja " << tarja()
+       << " | " << condicaoDeVenda();
+    return os.str();
 }
 
-Produto::~Produto() {
-    --vivos_;
+Produto& Produto::operator+=(int qtd) {
+    if (qtd > 0) {
+        quantidade_ += qtd;
+    }
+    return *this;
 }
 
 const std::string& Produto::getNome() const { return nome_; }
@@ -41,10 +53,6 @@ double Produto::valorEmEstoque() const {
     return static_cast<double>(quantidade_) * preco_;
 }
 
-int Produto::vivos() {
-    return vivos_;
-}
-
 bool Produto::retirar(int qtd) {
     if (qtd <= 0 || qtd > quantidade_) {
         return false;
@@ -54,12 +62,7 @@ bool Produto::retirar(int qtd) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Produto& p) {
-    return os << std::left << std::setw(12) << p.getNome()
-              << " | " << std::setw(20) << p.getPrincipioAtivo()
-              << " | Qtd: " << std::setw(4) << p.getQuantidade()
-              << " | R$ " << std::fixed << std::setprecision(2) << p.getPreco()
-              << " | Lote " << p.getLote() << " (val. " << p.getValidade() << ")"
-              << " | Tarja: " << p.tarja();
+    return os << p.ficha();
 }
 
-} // namespace poo
+} 
