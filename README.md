@@ -7,8 +7,9 @@ Projeto da disciplina de Programação Orientada a Objetos, feito por Caio Paiva
 A Farmácia Bem-Estar é uma farmácia de bairro que controlava o estoque num caderno. O sistema organiza esse estoque:
 
 - medicamentos isentos de prescrição (MIP) podem ser vendidos sem receita;
+- medicamentos sob prescrição (tarja vermelha) só saem com receita;
 - medicamentos controlados só saem com receita, e cada saída fica registrada;
-- o estoque cadastra, busca, remove e calcula o valor total, sem aceitar nomes repetidos.
+- o estoque cadastra, busca, remove, repõe e calcula o valor total, sem aceitar nomes repetidos.
 
 Este trabalho continua o sistema que fiz na Unidade I, agora usando herança, polimorfismo, classe abstrata e interface.
 
@@ -47,11 +48,12 @@ A pasta `build/` é criada na compilação e não vai para o repositório.
 
 | Classe | O que faz | Requisito |
 |---|---|---|
-| `Produto` | Classe abstrata com o que todo item do estoque tem; conta os objetos vivos | R5 |
+| `Produto` | Classe abstrata com o que todo item do estoque tem; monta a ficha (`ficha()`) e repõe estoque (`+=`) | R5, R11, R12 |
 | `Escrituravel` | Interface para escriturar as saídas com receita | R6 |
-| `MedicamentoIsento` | Medicamento que sai sem receita | R7 |
-| `MedicamentoControlado` | Medicamento que exige receita e escritura a saída | R7 e R8 |
-| `Estoque` | Guarda os medicamentos (herança privada de `std::vector`) | R9 |
+| `MedicamentoIsento` | Medicamento que sai sem receita | R7, R13 |
+| `MedicamentoSobPrescricao` | Medicamento que exige receita, sem retenção | R7, R13 |
+| `MedicamentoControlado` | Medicamento que exige receita e escritura a saída | R7, R8, R13 |
+| `Estoque` | Guarda os três tipos juntos (herança privada de `std::vector<std::unique_ptr<Produto>>`) | R9, R10 |
 
 As explicações de cada escolha estão no [DECISAO.md](DECISAO.md).
 
