@@ -1,16 +1,14 @@
 # Projeto de POO em C++ – Farmácia Bem-Estar
 
-Projeto da disciplina de Programação Orientada a Objetos, feito por Caio Paiva, aluno do 3º período de Ciência de Dados e Inteligência Artificial da UFPB.
+Projeto da disciplina de Programação Orientada a Objetos. Autor: Caio Paiva, 3º período de Ciência de Dados e Inteligência Artificial (UFPB).
 
 ## O tema
 
-A Farmácia Bem-Estar é uma farmácia de bairro que controlava o estoque num caderno. Este sistema organiza esse estoque: cada medicamento tem nome, princípio ativo, quantidade, preço, lote e validade, e o estoque cadastra, busca, remove, repõe e calcula o valor total, sem aceitar nomes repetidos.
-
-O ponto principal é que nem todo medicamento sai da farmácia do mesmo jeito. O isento de prescrição (MIP) é vendido sem receita, o de tarja vermelha só sai com receita, e o controlado só sai com receita, que fica retida e é escriturada. O projeto continua o sistema que fiz na Unidade I, agora usando classe abstrata, interface, herança e polimorfismo.
+A Farmácia Bem-Estar é uma farmácia de bairro que anotava o estoque num caderno. O sistema guarda os medicamentos com nome, princípio ativo, quantidade, preço, lote e validade. Dá para cadastrar, buscar, remover, repor e ver o valor total do estoque, e ele não aceita dois medicamentos com o mesmo nome. Cada tipo de medicamento sai de um jeito diferente. O isento (MIP) sai sem receita, o de tarja vermelha só sai com receita e o controlado só sai com receita, que fica retida e é escriturada. O projeto continua o sistema que fiz na Unidade I, agora com classe abstrata, interface, herança e polimorfismo.
 
 ## Como compilar e rodar
 
-É preciso ter CMake (3.16 ou mais novo), um compilador com C++17 e o make.
+Precisa de CMake 3.16 ou mais novo, compilador com C++17 e make.
 
 ```bash
 make            # configura e compila
@@ -19,7 +17,7 @@ make verifica   # compila com -Werror, roda e confere se a última linha é vivo
 make limpa      # apaga a pasta build/
 ```
 
-Também dá para usar o CMake direto:
+Ou direto pelo CMake:
 
 ```bash
 cmake -S . -B build
@@ -27,18 +25,18 @@ cmake --build build
 ./build/app
 ```
 
-## As classes
+## Classes
 
-| Classe | Papel | Forma de herança |
+| Classe | Papel | Herança |
 |---|---|---|
-| `Produto` | Base abstrata: o que todo medicamento do estoque tem; monta a ficha e repõe estoque (`+=`) | Base da hierarquia |
-| `Escrituravel` | Interface: obrigação de escriturar as saídas com receita retida | Interface pura, sem dados |
-| `MedicamentoIsento` | Medicamento que sai sem receita (MIP) | Pública de `Produto`, `final` |
-| `MedicamentoSobPrescricao` | Medicamento de tarja vermelha, sai só com receita | Pública de `Produto`, `final` |
-| `MedicamentoControlado` | Sai só com receita, que fica retida e escriturada | Múltipla: pública de `Produto` e de `Escrituravel`, `final` |
+| `Produto` | Classe abstrata com os dados de todo medicamento; monta a ficha e repõe estoque (`+=`) | Base |
+| `Escrituravel` | Interface para escriturar as saídas com receita retida | Interface pura, sem atributos |
+| `MedicamentoIsento` | Sai sem receita | Pública de `Produto`, `final` |
+| `MedicamentoSobPrescricao` | Tarja vermelha, sai só com receita | Pública de `Produto`, `final` |
+| `MedicamentoControlado` | Sai só com receita, que fica retida e é escriturada | Múltipla: pública de `Produto` e de `Escrituravel`, `final` |
 | `Estoque` | Guarda os medicamentos e é dono deles | Privada de `std::vector<std::unique_ptr<Produto>>` |
 
-O arquivo `include/poo/contrato.hpp` tem `static_assert` que conferem essa hierarquia na compilação. As respostas sobre as escolhas do projeto estão no [DECISAO.md](DECISAO.md).
+O `include/poo/contrato.hpp` tem os `static_assert` que conferem essa hierarquia quando compila. As respostas sobre as escolhas estão no [DECISAO.md](DECISAO.md).
 
 ## Saída do `make roda`
 
